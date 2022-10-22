@@ -74,3 +74,19 @@ class DBStorage:
     def close(self):
         """call remove() method on the private session attribute"""
         self.__session.remove()
+
+    def get(self, cls, id):
+        """returns the object based on the class name"""
+        objects = self.__session.query(classes[cls])
+        for obj in objects:
+            if obj.id == id:
+                return obj
+            return None
+
+    def count(self, cls=None):
+        """return number of objects in storage"""
+        numobjects = 0
+        for clss in classes:
+            if cls is None or cls is classes[clss] or cls is clss:
+                numobjects += len(self.__session.query(classes[clss]).all())
+        return numobjects
